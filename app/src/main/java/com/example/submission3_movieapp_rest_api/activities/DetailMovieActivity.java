@@ -2,6 +2,8 @@ package com.example.submission3_movieapp_rest_api.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -21,6 +23,9 @@ public class DetailMovieActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail_movie);
         if(getSupportActionBar()!=null){
             getSupportActionBar().setTitle(getIntent().getStringExtra("TITLE"));
+            ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#191826"));
+            getSupportActionBar().setBackgroundDrawable(colorDrawable);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         ImageView ivPoster = findViewById(R.id.iv_mv_poster);
         TextView tvTitle = findViewById(R.id.tv_mv_title);

@@ -2,8 +2,12 @@ package com.example.submission3_movieapp_rest_api.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -21,6 +25,9 @@ public class DetailTvShowActivity extends AppCompatActivity {
 
         if(getSupportActionBar()!=null){
             getSupportActionBar().setTitle(getIntent().getStringExtra("TITLE"));
+            ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#191826"));
+            getSupportActionBar().setBackgroundDrawable(colorDrawable);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
         ImageView ivPoster = findViewById(R.id.iv_ts_poster);

@@ -8,10 +8,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.submission3_movieapp_rest_api.R;
@@ -36,6 +39,8 @@ public class MovieFragment extends Fragment implements MovieAdapter.OnItemClick 
     private RecyclerView recyclerView;
     private MovieAdapter adapter;
     private List<MovieNowPlaying> listMovie;
+    private ProgressBar tvProgressBar;
+    private TextView tvNoRecord;
 
 
     @Override
@@ -45,6 +50,8 @@ public class MovieFragment extends Fragment implements MovieAdapter.OnItemClick 
         View v = inflater.inflate(R.layout.fragment_movie, container, false);
         recyclerView = v.findViewById(R.id.rv_movies);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        tvProgressBar = v.findViewById(R.id.pb_movie);
+        tvNoRecord = v.findViewById(R.id.tv_mv_empty);
         loadData();
         return v;
     }
@@ -60,13 +67,22 @@ public class MovieFragment extends Fragment implements MovieAdapter.OnItemClick 
                     listMovie = response.body().getNowPlayings();
                     adapter = new MovieAdapter(listMovie, MovieFragment.this);
                     recyclerView.setAdapter(adapter);
+                    tvProgressBar.setVisibility(View.GONE);
                 } else {
                     Toast.makeText(getActivity(), "Failed", Toast.LENGTH_LONG).show();
+                    tvNoRecord.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(Call<MovieNowPlayingResponse> call, Throwable t) {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        tvProgressBar.setVisibility(View.GONE);
+                        tvNoRecord.setVisibility(View.VISIBLE);
+                    }
+                }, 3000);
                 Log.d(TAG, "onFailure: " + t.getLocalizedMessage());
                 Toast.makeText(getActivity(), "Failed " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }

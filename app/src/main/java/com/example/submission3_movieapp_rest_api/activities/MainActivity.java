@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -20,8 +22,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bottomNavigationView = findViewById(R.id.bottom_nav);
+
+        if(getSupportActionBar()!=null) {
+            ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#191826"));
+            getSupportActionBar().setBackgroundDrawable(colorDrawable);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.menu_item_tvshow);
+
+
     }
 
     @Override

@@ -5,7 +5,15 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.MovieFragment">
-
+    <TextView
+        android:id="@+id/tv_mv_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No Record Here"
+        android:fontFamily="@font/lato_bold"
+        android:textColor="@color/white"
+        android:gravity="center_horizontal"
+        android:visibility="gone"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_movies"
         android:layout_width="match_parent"
@@ -15,5 +23,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/movie_recycler_item"/>
-
+    <LinearLayout
+        android:id="@+id/ll_pb_movie"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="visible"
+        >
+        <ProgressBar
+            android:id="@+id/pb_movie"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+    </LinearLayout>
 </FrameLayout>

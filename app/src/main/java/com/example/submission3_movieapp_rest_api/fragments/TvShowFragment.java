@@ -7,10 +7,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.submission3_movieapp_rest_api.R;
@@ -34,7 +38,8 @@ public class TvShowFragment extends Fragment implements TvShowAdapter.OnItemClic
     private RecyclerView recyclerView;
     private TvShowAdapter adapter;
     private List<TvAiringToday> airingTodayList;
-
+    private ProgressBar tvProgressBar;
+    private TextView tvNoRecord;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,6 +48,8 @@ public class TvShowFragment extends Fragment implements TvShowAdapter.OnItemClic
         View v = inflater.inflate(R.layout.fragment_tv_show, container, false);
         recyclerView = v.findViewById(R.id.rv_tvshow);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        tvProgressBar = v.findViewById(R.id.pb_tvshow);
+        tvNoRecord = v.findViewById(R.id.tv_ts_empty);
         loadData();
         return v;
     }
@@ -58,13 +65,27 @@ public class TvShowFragment extends Fragment implements TvShowAdapter.OnItemClic
                     airingTodayList = response.body().getAiringTodayList();
                     adapter = new TvShowAdapter(airingTodayList, TvShowFragment.this);
                     recyclerView.setAdapter(adapter);
+                    tvProgressBar.setVisibility(View.GONE);
                 }
+                else {
+                    Toast.makeText(getActivity(), "Failed", Toast.LENGTH_LONG).show();
+                    tvNoRecord.setVisibility(View.VISIBLE);
+                }
+
             }
 
             @Override
             public void onFailure(Call<TvAiringTodayResponse> call, Throwable t) {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        tvProgressBar.setVisibility(View.GONE);
+                        tvNoRecord.setVisibility(View.VISIBLE);
+                    }
+                }, 3000);
                 Log.d(TAG, "onFailure: " + t.getLocalizedMessage());
                 Toast.makeText(getActivity(), "Failed " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+
             }
         });
     }
