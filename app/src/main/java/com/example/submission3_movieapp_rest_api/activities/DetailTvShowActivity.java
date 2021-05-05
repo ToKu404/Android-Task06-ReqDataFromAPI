@@ -9,14 +9,26 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.submission3_movieapp_rest_api.R;
+import com.example.submission3_movieapp_rest_api.models.movie.MovieModel;
 import com.example.submission3_movieapp_rest_api.models.tvshow.TvShowModel;
 import com.example.submission3_movieapp_rest_api.networks.Const;
+import com.example.submission3_movieapp_rest_api.networks.movie.MovieApiClient;
+import com.example.submission3_movieapp_rest_api.networks.movie.MovieApiInterface;
+import com.example.submission3_movieapp_rest_api.networks.tvshow.TvApiClient;
+import com.example.submission3_movieapp_rest_api.networks.tvshow.TvApiInterface;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DetailTvShowActivity extends AppCompatActivity {
     private TvShowModel tvShowModel;
+    ImageView ivPoster, ivBanner;
+    TextView tvTitle, tvSinopsis, tvVote, tvYear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,18 +42,48 @@ public class DetailTvShowActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        ImageView ivPoster = findViewById(R.id.iv_ts_poster);
-        ImageView ivBanner = findViewById(R.id.iv_ts_banner);
-        TextView tvTitle = findViewById(R.id.tv_ts_title);
-        TextView tvSinopsis = findViewById(R.id.tv_ts_sinopsis);
-        TextView tvVote = findViewById(R.id.tv_ts_vote);
-        TextView tvYear = findViewById(R.id.tv_ts_year);
+        ivPoster = findViewById(R.id.iv_ts_poster);
+        ivBanner = findViewById(R.id.iv_ts_banner);
+        tvTitle = findViewById(R.id.tv_ts_title);
+        tvSinopsis = findViewById(R.id.tv_ts_sinopsis);
+        tvVote = findViewById(R.id.tv_ts_vote);
+        tvYear = findViewById(R.id.tv_ts_year);
 
-        tvTitle.setText(getIntent().getStringExtra("TITLE"));
-        tvSinopsis.setText(getIntent().getStringExtra("OVERVIEW"));
-        tvVote.setText(getIntent().getStringExtra("VOTE"));
-        tvYear.setText(getIntent().getStringExtra("YEAR"));
-        Glide.with(DetailTvShowActivity.this).load(Const.IMG_URL_300+getIntent().getStringExtra("IMG_URL")).into(ivPoster);
-        Glide.with(DetailTvShowActivity.this).load(Const.IMG_URL_300+getIntent().getStringExtra("BACKDROP")).into(ivBanner);
+        loadData(getIntent().getStringExtra("ID"));
+
+
+    }
+
+    private void loadData(String id) {
+        TvApiInterface tvApiInterface = TvApiClient.getTvDetail().create(TvApiInterface.class);
+        Call<TvShowModel> tvShowCall = tvApiInterface.getTvShow(id, Const.API_KEY);
+        tvShowCall.enqueue(new Callback<TvShowModel>() {
+            @Override
+            public void onResponse(Call<TvShowModel> call, Response<TvShowModel> response) {
+                System.out.println("URL :: "+ response.raw().request().url());
+                if (response.isSuccessful()&& response.body() != null)
+                {
+                    tvShowModel = response.body();
+                    addValue();
+                }
+                else
+                {
+                    Toast.makeText(DetailTvShowActivity.this,"Request Error :: " + response.errorBody(), Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<TvShowModel> call, Throwable t) {
+                Toast.makeText(DetailTvShowActivity.this,"Network Error :: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void addValue(){
+        tvTitle.setText(tvShowModel.getTitle());
+        tvSinopsis.setText(tvShowModel.getOverview());
+        tvVote.setText(tvShowModel.getVoteCount());
+        tvYear.setText(tvShowModel.getReleaseYear());
+        Glide.with(DetailTvShowActivity.this).load(Const.IMG_URL_300+tvShowModel.getPoster()).into(ivPoster);
+        Glide.with(DetailTvShowActivity.this).load(Const.IMG_URL_300+tvShowModel.getBackdrop()).into(ivBanner);
     }
 }

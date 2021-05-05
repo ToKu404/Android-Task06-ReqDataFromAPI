@@ -1,7 +1,6 @@
 package com.example.submission3_movieapp_rest_api.fragments;
 
 import android.content.Intent;
-import android.graphics.Movie;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -38,7 +37,7 @@ public class MovieFragment extends Fragment implements MovieAdapter.OnItemClick 
     private static final String TAG = "MovieFragment";
     private RecyclerView recyclerView;
     private MovieAdapter adapter;
-    private List<MovieNowPlaying> listMovie;
+    private List<MovieNowPlaying> listMovieNowPlaying;
     private ProgressBar tvProgressBar;
     private TextView tvNoRecord;
 
@@ -64,8 +63,8 @@ public class MovieFragment extends Fragment implements MovieAdapter.OnItemClick 
             @Override
             public void onResponse(retrofit2.Call<MovieNowPlayingResponse> call, Response<MovieNowPlayingResponse> response) {
                 if (response.isSuccessful() && response.body().getNowPlayings() != null) {
-                    listMovie = response.body().getNowPlayings();
-                    adapter = new MovieAdapter(listMovie, MovieFragment.this);
+                    listMovieNowPlaying = response.body().getNowPlayings();
+                    adapter = new MovieAdapter(listMovieNowPlaying, MovieFragment.this);
                     recyclerView.setAdapter(adapter);
                     tvProgressBar.setVisibility(View.GONE);
                 } else {
@@ -92,13 +91,8 @@ public class MovieFragment extends Fragment implements MovieAdapter.OnItemClick 
     @Override
     public void onClick(int pos) {
         Intent detailActivity = new Intent(getActivity(), DetailMovieActivity.class);
-        detailActivity.putExtra("ID", listMovie.get(pos).getId());
-        detailActivity.putExtra("TITLE", listMovie.get(pos).getTitle());
-        detailActivity.putExtra("IMG_URL", listMovie.get(pos).getImgUrl());
-        detailActivity.putExtra("YEAR", listMovie.get(pos).getReleaseDate());
-        detailActivity.putExtra("OVERVIEW", listMovie.get(pos).getOverview());
-        detailActivity.putExtra("VOTE_AVERAGE", listMovie.get(pos).getVoteAverage());
-        detailActivity.putExtra("RATE", listMovie.get(pos).getRating());
+        detailActivity.putExtra("ID", listMovieNowPlaying.get(pos).getId());
+        detailActivity.putExtra("TITLE", listMovieNowPlaying.get(pos).getTitle());
         startActivity(detailActivity);
     }
 }

@@ -87,4 +87,9 @@ public class TvShowModel {
     public void setBackdrop(String backdrop) {
         this.backdrop = backdrop;
     }
+
+    public String getReleaseYear() {
+        String[] releaseYear = releaseDate.split("-");
+        return releaseYear[0];
+    }
 }

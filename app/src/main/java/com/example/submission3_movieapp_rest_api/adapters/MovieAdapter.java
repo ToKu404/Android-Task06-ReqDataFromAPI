@@ -18,11 +18,11 @@ import com.example.submission3_movieapp_rest_api.networks.Const;
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.GridViewHolder> {
-    private List<MovieNowPlaying> movieList;
+    private List<MovieNowPlaying> movieNowPlayingList;
     private OnItemClick onItemClick;
 
-    public MovieAdapter(List<MovieNowPlaying> movieList, OnItemClick onItemClick){
-        this.movieList = movieList;
+    public MovieAdapter(List<MovieNowPlaying> movieNowPlayingList, OnItemClick onItemClick){
+        this.movieNowPlayingList = movieNowPlayingList;
         this.onItemClick = onItemClick;
     }
 
@@ -35,16 +35,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.GridViewHold
 
     @Override
     public void onBindViewHolder(@NonNull GridViewHolder holder, int position) {
-        Glide.with(holder.itemView.getContext()).load(Const.IMG_URL_200 + movieList.get(position).getImgUrl()).into(holder.ivPoster);
-        holder.tvTitle.setText(movieList.get(position).getTitle());
-        holder.tvReleaseYear.setText(movieList.get(position).getReleaseDate());
-        holder.tvVoteAverage.setText(movieList.get(position).getVoteAverage());
-        holder.ratingBar.setRating(movieList.get(position).getRating());
+        Glide.with(holder.itemView.getContext()).load(Const.IMG_URL_200 + movieNowPlayingList.get(position).getImgUrl()).into(holder.ivPoster);
+        holder.tvTitle.setText(movieNowPlayingList.get(position).getTitle());
+        holder.tvReleaseYear.setText(movieNowPlayingList.get(position).getReleaseDate());
+        holder.tvVoteAverage.setText(movieNowPlayingList.get(position).getVoteAverage());
+        holder.ratingBar.setRating(movieNowPlayingList.get(position).getRating());
     }
 
     @Override
     public int getItemCount() {
-        return movieList.size();
+        return movieNowPlayingList.size();
     }
 
     class GridViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,8 +19,8 @@ import android.widget.Toast;
 import com.example.submission3_movieapp_rest_api.R;
 import com.example.submission3_movieapp_rest_api.activities.DetailTvShowActivity;
 import com.example.submission3_movieapp_rest_api.adapters.TvShowAdapter;
-import com.example.submission3_movieapp_rest_api.models.tvshow.TvAiringToday;
-import com.example.submission3_movieapp_rest_api.models.tvshow.TvAiringTodayResponse;
+import com.example.submission3_movieapp_rest_api.models.tvshow.TvShowAiringToday;
+import com.example.submission3_movieapp_rest_api.models.tvshow.TvShowAiringTodayResponse;
 import com.example.submission3_movieapp_rest_api.networks.Const;
 import com.example.submission3_movieapp_rest_api.networks.tvshow.TvApiClient;
 import com.example.submission3_movieapp_rest_api.networks.tvshow.TvApiInterface;
@@ -37,7 +36,7 @@ public class TvShowFragment extends Fragment implements TvShowAdapter.OnItemClic
     public static final String TAG = "TvShowFragment";
     private RecyclerView recyclerView;
     private TvShowAdapter adapter;
-    private List<TvAiringToday> airingTodayList;
+    private List<TvShowAiringToday> airingTodayList;
     private ProgressBar tvProgressBar;
     private TextView tvNoRecord;
 
@@ -57,10 +56,10 @@ public class TvShowFragment extends Fragment implements TvShowAdapter.OnItemClic
     private void loadData() {
         TvApiInterface tvApiInterface = TvApiClient.getRetrofit().create(TvApiInterface.class);
 
-        final retrofit2.Call<TvAiringTodayResponse> airingTodayCall = tvApiInterface.getAiringToday(Const.API_KEY);
-        airingTodayCall.enqueue(new Callback<TvAiringTodayResponse>() {
+        final retrofit2.Call<TvShowAiringTodayResponse> airingTodayCall = tvApiInterface.getAiringToday(Const.API_KEY);
+        airingTodayCall.enqueue(new Callback<TvShowAiringTodayResponse>() {
             @Override
-            public void onResponse(Call<TvAiringTodayResponse> call, Response<TvAiringTodayResponse> response) {
+            public void onResponse(Call<TvShowAiringTodayResponse> call, Response<TvShowAiringTodayResponse> response) {
                 if(response.isSuccessful() && response.body().getAiringTodayList()!=null){
                     airingTodayList = response.body().getAiringTodayList();
                     adapter = new TvShowAdapter(airingTodayList, TvShowFragment.this);
@@ -75,7 +74,7 @@ public class TvShowFragment extends Fragment implements TvShowAdapter.OnItemClic
             }
 
             @Override
-            public void onFailure(Call<TvAiringTodayResponse> call, Throwable t) {
+            public void onFailure(Call<TvShowAiringTodayResponse> call, Throwable t) {
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
@@ -96,11 +95,6 @@ public class TvShowFragment extends Fragment implements TvShowAdapter.OnItemClic
         Intent detailActivity = new Intent(getActivity(), DetailTvShowActivity.class);
         detailActivity.putExtra("ID", airingTodayList.get(pos).getId());
         detailActivity.putExtra("TITLE", airingTodayList.get(pos).getTitle());
-        detailActivity.putExtra("IMG_URL", airingTodayList.get(pos).getImgUrl());
-        detailActivity.putExtra("YEAR", airingTodayList.get(pos).getReleaseYear());
-        detailActivity.putExtra("OVERVIEW", airingTodayList.get(pos).getOverview());
-        detailActivity.putExtra("VOTE", airingTodayList.get(pos).getVoteCount());
-        detailActivity.putExtra("BACKDROP", airingTodayList.get(pos).getBackdrop());
         startActivity(detailActivity);
     }
 }

@@ -75,4 +75,14 @@ public class MovieModel {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public Float getRating() {
+        Float rating = ((Float.parseFloat(voteAverage))/10)*5;
+        return rating;
+    }
+
+    public String getYear() {
+        String[] relaseYear = releaseDate.split("-");
+        return relaseYear[0];
+    }
 }

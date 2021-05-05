@@ -3,7 +3,7 @@ package com.example.submission3_movieapp_rest_api.models.tvshow;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class TvAiringToday {
+public class TvShowAiringToday {
     private String id;
     private String overview;
     private String[] releaseYear;

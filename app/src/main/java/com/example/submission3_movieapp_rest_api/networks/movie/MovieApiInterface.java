@@ -9,7 +9,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface MovieApiInterface {
-    // https://api.themoviedb.org/3/movie/now_playing
     @GET("now_playing")
     Call<MovieNowPlayingResponse> getNowPlaying(
             @Query("api_key") String apiKey

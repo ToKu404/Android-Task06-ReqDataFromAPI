@@ -11,18 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.submission3_movieapp_rest_api.R;
-import com.example.submission3_movieapp_rest_api.models.tvshow.TvAiringToday;
+import com.example.submission3_movieapp_rest_api.models.tvshow.TvShowAiringToday;
 import com.example.submission3_movieapp_rest_api.networks.Const;
 
 import java.util.List;
 
 public class TvShowAdapter extends RecyclerView.Adapter<TvShowAdapter.ViewHolder> {
 
-    private List<TvAiringToday> tvAiringTodayList;
+    private List<TvShowAiringToday> tvShowAiringTodayList;
     private OnItemClick onItemClick;
 
-    public TvShowAdapter(List<TvAiringToday> tvAiringTodayList, OnItemClick onItemClick){
-        this.tvAiringTodayList = tvAiringTodayList;
+    public TvShowAdapter(List<TvShowAiringToday> tvShowAiringTodayList, OnItemClick onItemClick){
+        this.tvShowAiringTodayList = tvShowAiringTodayList;
         this.onItemClick = onItemClick;
     }
 
@@ -36,17 +36,17 @@ public class TvShowAdapter extends RecyclerView.Adapter<TvShowAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Glide.with(holder.itemView.getContext()).load(Const.IMG_URL_200 + tvAiringTodayList.get(position).getImgUrl()).into(holder.ivPoster);
-        holder.tvTitle.setText(tvAiringTodayList.get(position).getTitle());
-        holder.tvReleaseYear.setText(tvAiringTodayList.get(position).getReleaseYear());
-        holder.tvVote.setText(tvAiringTodayList.get(position).getVoteCount());
-        holder.tvSinopsis.setText(tvAiringTodayList.get(position).getOverview());
+        Glide.with(holder.itemView.getContext()).load(Const.IMG_URL_200 + tvShowAiringTodayList.get(position).getImgUrl()).into(holder.ivPoster);
+        holder.tvTitle.setText(tvShowAiringTodayList.get(position).getTitle());
+        holder.tvReleaseYear.setText(tvShowAiringTodayList.get(position).getReleaseYear());
+        holder.tvVote.setText(tvShowAiringTodayList.get(position).getVoteCount());
+        holder.tvSinopsis.setText(tvShowAiringTodayList.get(position).getOverview());
 
     }
 
     @Override
     public int getItemCount() {
-        return tvAiringTodayList.size();
+        return tvShowAiringTodayList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
